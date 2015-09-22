@@ -1,0 +1,31 @@
+20: 512
+25: 458
+30: 402
+35: 352
+40: 313
+50: 253
+60: 206
+70: 175
+80: 155
+90: 138
+100: 131
+125: 106
+
+readings taken on white paper
+
+Using MATLAB (2-term exponential):
+  f(x) = 810.5 * exp(-0.03278 * x) + 97
+  R-squared = 0.9988
+
+Measurements not used for calibration:
+  28: 420
+  38: 321
+  45: 273
+  55: 230
+  65: 186
+  75: 162
+  85: 150
+  95: 138
+  110: 114
+
+Average error for these readings: 1.1893%
