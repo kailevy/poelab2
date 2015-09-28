@@ -6,9 +6,9 @@ from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import time
 
-port = '/dev/ttyACM1'
+port = '/dev/ttyACM0'
 frequency = 9600
-y_threshold = 35
+y_threshold = 40
 noise_thresh = 60
 
 class Plotter(object):
@@ -80,9 +80,8 @@ class Plotter(object):
         data = self.prepare_data(data)
         data = self.convert_to_cartesian(data)
         color = self.colorcode(data[1])
-        self.ax.scatter(data[0],data[1],data[2],s=30,c=color)
-        self.fig.canvas.draw()
-        plt.pause(0.1)
+        self.ax.scatter(data[0],data[1],data[2],s=10,c=color)
+        plt.pause(0.001)
 
 
     def graph_2d(self,data):

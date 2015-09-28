@@ -5,10 +5,12 @@ Servo pan;
 byte sensor_pin = A0;
 
 // range of angles for servos
-int pan_max = 130;
-int pan_min = 50;
-int tilt_max = 120;
-int tilt_min = 70;
+int pan_max = 120;
+int pan_min = 60;
+int tilt_max = 140;
+int tilt_min = 60;
+int pan_step = 1;
+int tilt_step = 1; // should be odd!
 
 void setup() {
   Serial.begin(9600);
@@ -16,49 +18,50 @@ void setup() {
   pan.attach(10);
   middle_servos();
   while (wait_for_start() != 1){
-    delay(100);
+    delay(50);
   }
+  serialFlush();
 }
 
 void loop() {
-  for(int tilt_pos = tilt_min; tilt_pos <= tilt_max; tilt_pos += 3) {
+  for(int tilt_pos = tilt_min; tilt_pos <= tilt_max; tilt_pos += tilt_step) {
     tilt.write(tilt_pos);
     byte odd = tilt_pos % 2;
-    // goes frorm low pan to high pan on odd tilt angles
+    // goes from low pan to high pan on odd tilt angles
     if (odd) {
-      for(int pan_pos = pan_min; pan_pos <= pan_max; pan_pos += 5) {
+      for(int pan_pos = pan_min; pan_pos <= pan_max; pan_pos += pan_step) {
         pan_and_write(tilt_pos,pan_pos);
       }
     }
     // otherwise high pan to low pan
     else {
-      for(int pan_pos = pan_max; pan_pos >= pan_min; pan_pos -= 5) {
+      for(int pan_pos = pan_max; pan_pos >= pan_min; pan_pos -= pan_step) {
         pan_and_write(tilt_pos,pan_pos);
       }
     }
-    //flushes serial backlog
-    serialFlush();
     //signals that it has finished one sweep and then waits for python
     while (wait_for_start() != 1){
+      delay(50);
       Serial.println('a');
-      delay(100);
     }
+    serialFlush();
   }
   //sends signal to python that it is finished and stalls
   Serial.println('b');
   while(wait_for_start() != 1){
-    delay(100);
+    delay(50);
   }
+  serialFlush();
 }
 
 void pan_and_write(int tilt_pos,int pan_pos) {
   // pans and then records three readings
   pan.write(pan_pos);
-  delay(200);
+  delay(50);
   int sensorValue1 = analogRead(sensor_pin);
-  delay(100);
+  delay(20);
   int sensorValue2 = analogRead(sensor_pin);
-  delay(100);
+  delay(20);
   int sensorValue3 = analogRead(sensor_pin);
   Serial.print(tilt_pos);
   Serial.print(',');
