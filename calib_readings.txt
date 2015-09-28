@@ -17,6 +17,9 @@ Using MATLAB (2-term exponential):
   f(x) = 810.5 * exp(-0.03278 * x) + 97
   R-squared = 0.9988
 
+  Inverse (for going from readings to distances):
+    -30.5064 * log(0.00123381 * (-97+x))
+
 Measurements not used for calibration:
   28: 420
   38: 321
